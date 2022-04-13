@@ -20,6 +20,7 @@ module.exports = class GotoClient extends AkairoClient {
             prefix: config.prefix,
             defaultCooldown: 2000,
             directory: './src/commands/',
+            autoRegisterSlashCommands: true
         });
 
         this.listenerHandler = new ListenerHandler(this, {

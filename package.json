@@ -12,6 +12,7 @@
     "common-tags": "^1.8.2",
     "discord-akairo": "npm:@notenoughupdates/discord-akairo@^9.0.9",
     "discord.js": "^13.6.0",
+    "minecraft-server-util": "^5.2.9",
     "mysql2": "^2.3.3"
   }
 }
