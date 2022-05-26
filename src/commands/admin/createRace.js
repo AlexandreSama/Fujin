@@ -4,7 +4,7 @@ const { Modal, TextInputComponent, MessageActionRow } = require('discord.js');
 class CreateRaceCommand extends Command{
     constructor(){
         super('createrace', {
-            aliases: ['cr', 'createrace'],
+            aliases: ['createrace'],
             userPermissions: "ADMINISTRATOR",
             category: 'Administration',
             description: {
@@ -17,7 +17,7 @@ class CreateRaceCommand extends Command{
     }
 
     execSlash(message, args){
-        message.reply("C'est parfait !")
+        
     }
 
 }

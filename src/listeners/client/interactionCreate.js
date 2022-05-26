@@ -15,9 +15,10 @@ class InteractionCreateListener extends Listener {
     }
     
     async exec(interaction) {
+
         switch (interaction.commandName) {
-            case "cr":
-                const modal = new Modal()
+            case "createrace":
+                const modalRace = new Modal()
                     .setCustomId('createRace')
                     .setTitle('Création de Race');
 
@@ -61,18 +62,85 @@ class InteractionCreateListener extends Listener {
                 const fiveActionRow = new MessageActionRow().addComponents(raceLoreInput);
 
                 // Add inputs to the modal
-                modal.addComponents(firstActionRow, secondActionRow, thirdActionRow, fourthActionRow, fiveActionRow);
-                interaction.showModal(modal)
-                break;
+                modalRace.addComponents(firstActionRow, secondActionRow, thirdActionRow, fourthActionRow, fiveActionRow);
+                interaction.showModal(modalRace)
+            break;
+
+            case "createitem":
+                const modalItem = new Modal()
+                    .setCustomId('createItem')
+                    .setTitle('Création d\'un Item');
+
+                const itemNameInput = new TextInputComponent()
+                    .setCustomId('itemName')
+                    // The label is the prompt the user sees for this input
+                    .setLabel("Quel est le nom de cet item ?")
+                    // Short means only a single line of text
+                    .setStyle('SHORT');
+
+                const itemDamageInput = new TextInputComponent()
+                    .setCustomId('itemDamage')
+                    .setLabel("Point de dégat de l'item")
+                    // Paragraph means multiple lines of text.
+                    .setStyle('SHORT');
+
+                const itemDefenseInput = new TextInputComponent()
+                .setCustomId('itemDefense')
+                .setLabel("Point de défense de l'item")
+                // Paragraph means multiple lines of text.
+                .setStyle('SHORT');
+
+                const itemEffectsInput = new TextInputComponent()
+                    .setCustomId('itemEffects')
+                    .setLabel("Les effets de cet item")
+                    // Paragraph means multiple lines of text.
+                    .setStyle('SHORT');
+
+                const itemLoreInput = new TextInputComponent()
+                .setCustomId('itemLore')
+                .setLabel("Un peu de lore peut-être ?")
+                // Paragraph means multiple lines of text.
+                .setStyle('PARAGRAPH');
+
+                // An action row only holds one text input,
+                // so you need one action row per text input.
+                const firstActionRowItem = new MessageActionRow().addComponents(itemNameInput);
+                const secondActionRowItem = new MessageActionRow().addComponents(itemDamageInput);
+                const thirdActionRowItem = new MessageActionRow().addComponents(itemDefenseInput);
+                const fourthActionRowItem = new MessageActionRow().addComponents(itemEffectsInput);
+                const fiveActionRowItem = new MessageActionRow().addComponents(itemLoreInput);
+
+                // Add inputs to the modal
+                modalItem.addComponents(firstActionRowItem, secondActionRowItem, thirdActionRowItem, fourthActionRowItem, fiveActionRowItem);
+                interaction.showModal(modalItem)
+            break;
         }
 
         if(interaction.isModalSubmit()){
-            let raceName = interaction.fields.getTextInputValue('raceName')
-            let raceHealth = interaction.fields.getTextInputValue('raceHealth')
-            let raceAttack = interaction.fields.getTextInputValue('raceAttack')
-            let raceDefense =interaction.fields.getTextInputValue('raceDefense')
-            let raceLore = interaction.fields.getTextInputValue('raceLore')
-            functions.writeRaceToDB(interaction, raceName, raceHealth, raceAttack, raceDefense, raceLore)
+
+            switch (interaction.customId) {
+                
+                case "createItem":
+                    let itemName = interaction.fields.getTextInputValue('itemName')
+                    let itemDamage = interaction.fields.getTextInputValue('itemDamage')
+                    let itemDefense = interaction.fields.getTextInputValue('itemDefense')
+                    let itemEffects =interaction.fields.getTextInputValue('itemEffects')
+                    let itemLore = interaction.fields.getTextInputValue('itemLore')
+                    functions.writeItemToDB(interaction, itemName, itemDamage, itemDefense, itemEffects, itemLore)
+
+                break;
+
+                case "createRace":
+                    let raceName = interaction.fields.getTextInputValue('raceName')
+                    let raceHealth = interaction.fields.getTextInputValue('raceHealth')
+                    let raceAttack = interaction.fields.getTextInputValue('raceAttack')
+                    let raceDefense =interaction.fields.getTextInputValue('raceDefense')
+                    let raceLore = interaction.fields.getTextInputValue('raceLore')
+                    functions.writeRaceToDB(interaction, raceName, raceHealth, raceAttack, raceDefense, raceLore)
+
+                break;
+            }
+
         }
     }
 }

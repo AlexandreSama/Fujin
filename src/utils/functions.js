@@ -63,7 +63,20 @@ async function writeRaceToDB(interaction, name, health, attack, defense, lore) {
             await interaction.reply('Erreur avec la BDD !')
         }
         if(result){
-            await interaction.reply('Parfait, la création est réussi !')
+            await interaction.reply('Ajout de la race réussi !')
+        }
+    })
+}
+
+async function writeItemToDB(interaction, name, damage, defense, effects, lore) {
+    connection.query(`INSERT INTO items (name, damage, defense, effects, lore) VALUES 
+    ('${name}', '${damage}', '${defense}', '${effects}', '${lore}')`, async function(err, result){
+        if(err){
+            console.log(err)
+            await interaction.reply('Erreur avec la BDD')
+        }
+        if(result){
+            await interaction.reply('Ajout de l\'item réussi !')
         }
     })
 }
@@ -71,5 +84,6 @@ async function writeRaceToDB(interaction, name, health, attack, defense, lore) {
 module.exports = {
     writePlayerToDB,
     checkUserInDB,
-    writeRaceToDB
+    writeRaceToDB,
+    writeItemToDB
 }
