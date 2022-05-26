@@ -5,7 +5,7 @@ class ShowInventoryCommand extends Command{
         super('showinventory', {
             aliases: ['si'],
             args: [{
-                id: "Player", type: "member"
+                id: "player", type: "member"
             }],
             category: 'Roleplay',
             description: {
@@ -18,7 +18,7 @@ class ShowInventoryCommand extends Command{
     }
 
     execSlash(message, args){
-        console.log(args.Player)
+        console.log(args.player)
     }
 
 }
