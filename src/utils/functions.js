@@ -81,9 +81,61 @@ async function writeItemToDB(interaction, name, damage, defense, effects, lore) 
     })
 }
 
+async function writeServerToDB(serverID, interaction) {
+    connection.query('CREATE DATABASE' + '`' + `${serverID}` + '`', async function(err, result){
+        if(err){
+            console.log(err)
+        }
+        if(result){
+            connection.query('USE' + '`' + `${serverID}` + '`', async function(err, result){
+                if(err){
+                    console.log(err)
+                }
+                if(result){
+                    connection.query(`CREATE TABLE items (id INT PRIMARY KEY AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, damage BIGINT(20) NOT NULL, defense BIGINT(20) NOT NULL, effects TEXT NOT NULL, lore TEXT NOT NULL)`, function(err, result){
+                        if(err){
+                            console.log(err)
+                        }
+                        if(result){
+                            connection.query(`CREATE TABLE players (id INT PRIMARY KEY AUTO_INCREMENT NOT NULL, discordId INT(11) NOT NULL, health INT(11) NOT NULL, attack INT(11) NOT NULL, defense INT(11) NOT NULL, money INT(11) NOT NULL, inventory JSON NOT NULL, race VARCHAR(255) NOT NULL)`, function(err, result){
+                                if(err){
+                                    console.log(err)
+                                }
+                                if(result){
+                                    connection.query(`CREATE TABLE race ( id INT PRIMARY KEY AUTO_INCREMENT NOT NULL, raceName VARCHAR(255) NOT NULL, baseHealth INT(11) NOT NULL, baseAttack INT(11) NOT NULL, baseDefense INT(11) NOT NULL, lore TEXT NOT NULL)`, function(err, result){
+                                        if(err){
+                                            console.log(err)
+                                        }
+                                        if(result){
+                                            interaction.channel.send('La configuration est terminé ! Merci a vous !')
+                                        }
+                                    })
+                                }
+                            })
+                        }
+                    })
+                }
+            })
+        }
+    })
+}
+
+async function checkDB(serverID, interaction) {
+    connection.query(`USE ${serverID}`, async function(err, result){
+        if(err){
+            writeServerToDB(serverID, interaction)
+        }
+        if(result){
+            await interaction.reply('Tu a déjà fait la configuration !')
+        }
+    })
+}
+
 module.exports = {
     writePlayerToDB,
     checkUserInDB,
     writeRaceToDB,
-    writeItemToDB
+    writeItemToDB,
+    checkDB,
+    writeServerToDB
 }
