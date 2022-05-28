@@ -69,44 +69,35 @@ class InteractionCreateListener extends Listener {
 
                 const itemNameInput = new TextInputComponent()
                     .setCustomId('itemName')
-                    // The label is the prompt the user sees for this input
                     .setLabel("Quel est le nom de cet item ?")
-                    // Short means only a single line of text
                     .setStyle('SHORT');
 
                 const itemDamageInput = new TextInputComponent()
                     .setCustomId('itemDamage')
                     .setLabel("Point de dégat de l'item")
-                    // Paragraph means multiple lines of text.
                     .setStyle('SHORT');
 
                 const itemDefenseInput = new TextInputComponent()
-                .setCustomId('itemDefense')
-                .setLabel("Point de défense de l'item")
-                // Paragraph means multiple lines of text.
-                .setStyle('SHORT');
+                    .setCustomId('itemDefense')
+                    .setLabel("Point de défense de l'item")
+                    .setStyle('SHORT');
 
                 const itemEffectsInput = new TextInputComponent()
                     .setCustomId('itemEffects')
                     .setLabel("Les effets de cet item")
-                    // Paragraph means multiple lines of text.
                     .setStyle('SHORT');
 
                 const itemLoreInput = new TextInputComponent()
-                .setCustomId('itemLore')
-                .setLabel("Un peu de lore peut-être ?")
-                // Paragraph means multiple lines of text.
-                .setStyle('PARAGRAPH');
+                    .setCustomId('itemLore')
+                    .setLabel("Un peu de lore peut-être ?")
+                    .setStyle('PARAGRAPH');
 
-                // An action row only holds one text input,
-                // so you need one action row per text input.
                 const firstActionRowItem = new MessageActionRow().addComponents(itemNameInput);
                 const secondActionRowItem = new MessageActionRow().addComponents(itemDamageInput);
                 const thirdActionRowItem = new MessageActionRow().addComponents(itemDefenseInput);
                 const fourthActionRowItem = new MessageActionRow().addComponents(itemEffectsInput);
                 const fiveActionRowItem = new MessageActionRow().addComponents(itemLoreInput);
 
-                // Add inputs to the modal
                 modalItem.addComponents(firstActionRowItem, secondActionRowItem, thirdActionRowItem, fourthActionRowItem, fiveActionRowItem);
                 interaction.showModal(modalItem)
             break;

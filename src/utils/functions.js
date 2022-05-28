@@ -56,6 +56,16 @@ async function checkUserInDB(discordId) {
     })
 }
 
+/**
+ * It takes in 5 parameters, and then inserts them into a database.
+ * </code>
+ * @param interaction - The interaction object from the interaction handler
+ * @param name - String
+ * @param health - 100
+ * @param attack - number
+ * @param defense - number
+ * @param lore - The lore of the race
+ */
 async function writeRaceToDB(interaction, name, health, attack, defense, lore) {
     connection.query(`INSERT INTO race (raceName, baseHealth, baseAttack, baseDefense, lore) VALUES
     ('${name}', '${health}', '${attack}', '${defense}', '${lore}')`, async function(err, result){
@@ -68,6 +78,15 @@ async function writeRaceToDB(interaction, name, health, attack, defense, lore) {
     })
 }
 
+/**
+ * It takes in 5 arguments, and then inserts them into a database.
+ * @param interaction - the interaction object
+ * @param name - The name of the item
+ * @param damage - int
+ * @param defense - int
+ * @param effects - "1,2,3"
+ * @param lore - string
+ */
 async function writeItemToDB(interaction, name, damage, defense, effects, lore) {
     connection.query(`INSERT INTO items (name, damage, defense, effects, lore) VALUES 
     ('${name}', '${damage}', '${defense}', '${effects}', '${lore}')`, async function(err, result){
@@ -81,6 +100,12 @@ async function writeItemToDB(interaction, name, damage, defense, effects, lore) 
     })
 }
 
+/**
+ * It creates a database with the server ID, then creates 3 tables in that database.
+ * </code>
+ * @param serverID - The ID of the server
+ * @param interaction - The message object
+ */
 async function writeServerToDB(serverID, interaction) {
     connection.query('CREATE DATABASE' + '`' + `${serverID}` + '`', async function(err, result){
         if(err){
@@ -120,6 +145,11 @@ async function writeServerToDB(serverID, interaction) {
     })
 }
 
+/**
+ * It checks if a database exists, if it doesn't, it creates it.
+ * @param serverID - The ID of the server the bot is in.
+ * @param interaction - The interaction object that is passed to the command handler.
+ */
 async function checkDB(serverID, interaction) {
     connection.query(`USE ${serverID}`, async function(err, result){
         if(err){
