@@ -1,5 +1,6 @@
 const mysql2 = require('mysql2')
 const config = require('../config.json')
+const fs = require('fs')
 
 /* It's creating a connection to the database. */
 const connection =  mysql2.createConnection({
@@ -67,13 +68,37 @@ async function checkUserInDB(discordId) {
  * @param lore - The lore of the race
  */
 async function writeRaceToDB(interaction, name, health, attack, defense, lore) {
-    connection.query(`INSERT INTO race (raceName, baseHealth, baseAttack, baseDefense, lore) VALUES
+    connection.query(`INSERT INTO races (raceName, baseHealth, baseAttack, baseDefense, lore) VALUES
     ('${name}', '${health}', '${attack}', '${defense}', '${lore}')`, async function(err, result){
         if(err){
             await interaction.reply('Erreur avec la BDD !')
         }
         if(result){
             await interaction.reply('Ajout de la race réussi !')
+        }
+    })
+}
+
+/**
+ * It takes in 5 parameters, and then inserts them into a table in a MySQL database.
+ * </code>
+ * @param interaction - The interaction object, which is the object that contains the message, the
+ * author, the channel, etc.
+ * @param name - The name of the mob
+ * @param health - 100
+ * @param attack - The attack of the mob
+ * @param defense - 0
+ * @param lore - The lore of the mob
+ */
+async function writeMobToDB(interaction, name, health, attack, defense, lore) {
+    connection.query(`INSERT INTO mobs (mobName, baseHealth, baseAttack, baseDefense, lore) VALUES
+    ('${name}', '${health}', '${attack}', '${defense}', '${lore}')`, async function(err, result){
+        if(err){
+            console.log(err)
+            await interaction.reply('Erreur avec la BDD !')
+        }
+        if(result){
+            await interaction.reply('A-tu une image ?')
         }
     })
 }
@@ -127,12 +152,24 @@ async function writeServerToDB(serverID, interaction) {
                                     console.log(err)
                                 }
                                 if(result){
-                                    connection.query(`CREATE TABLE race ( id INT PRIMARY KEY AUTO_INCREMENT NOT NULL, raceName VARCHAR(255) NOT NULL, baseHealth INT(11) NOT NULL, baseAttack INT(11) NOT NULL, baseDefense INT(11) NOT NULL, lore TEXT NOT NULL)`, function(err, result){
+                                    connection.query(`CREATE TABLE races ( id INT PRIMARY KEY AUTO_INCREMENT NOT NULL, raceName VARCHAR(255) NOT NULL, baseHealth INT(11) NOT NULL, baseAttack INT(11) NOT NULL, baseDefense INT(11) NOT NULL, lore TEXT NOT NULL)`, function(err, result){
                                         if(err){
                                             console.log(err)
                                         }
                                         if(result){
-                                            interaction.channel.send('La configuration est terminé ! Merci a vous !')
+                                            connection.query(`CREATE TABLE mobs ( id INT PRIMARY KEY AUTO_INCREMENT NOT NULL, mobName VARCHAR(255) NOT NULL, baseHealth INT(11) NOT NULL, baseAttack INT(11) NOT NULL, baseDefense INT(11) NOT NULL, lore TEXT NOT NULL)`, function(err, result){
+                                                if(err){
+                                                    console.log(err)
+                                                }
+                                                if(result){
+                                                    let folders = ["mobs", "items", "races"]
+                                                    fs.mkdirSync(__dirname + `\\guilds\\${serverID}`)
+                                                    folders.forEach(element => {
+                                                        fs.mkdirSync(__dirname + `\\guilds\\${serverID}\\${element}`)
+                                                    })
+                                                    interaction.channel.send('La configuration est terminé ! Merci a vous !')
+                                                }
+                                            })
                                         }
                                     })
                                 }
@@ -166,6 +203,7 @@ module.exports = {
     checkUserInDB,
     writeRaceToDB,
     writeItemToDB,
+    writeMobToDB,
     checkDB,
     writeServerToDB
 }

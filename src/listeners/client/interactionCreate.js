@@ -16,6 +16,8 @@ class InteractionCreateListener extends Listener {
     
     async exec(interaction) {
 
+        console.log(interaction)
+
         /* Switch with Command Name */
         switch (interaction.commandName) {
 
@@ -102,6 +104,47 @@ class InteractionCreateListener extends Listener {
                 interaction.showModal(modalItem)
             break;
 
+            case "createmob":
+                const modalMob = new Modal()
+                    .setCustomId('createMob')
+                    .setTitle('Création de Mob');
+
+                const MobNameInput = new TextInputComponent()
+                    .setCustomId('MobName')
+                    .setLabel("Quel est le nom de ce Mob ?")
+                    .setStyle('SHORT');
+
+                const MobHealthInput = new TextInputComponent()
+                    .setCustomId('MobHealth')
+                    .setLabel("Point de vie de ce Mob ?")
+                    .setStyle('SHORT');
+
+                const MobAttackInput = new TextInputComponent()
+                    .setCustomId('MobAttack')
+                    .setLabel("Point d'attaque de ce mob ?")
+                    .setStyle('SHORT');
+
+                const MobDefenseInput = new TextInputComponent()
+                    .setCustomId('MobDefense')
+                    .setLabel("Point de défense de ce mob ?")
+                    .setStyle('SHORT');
+
+                const MobLoreInput = new TextInputComponent()
+                    .setCustomId('MobLore')
+                    .setLabel("Un peu de lore peut-être ?")
+                    .setStyle('PARAGRAPH');
+
+                const firstActionRowMob = new MessageActionRow().addComponents(MobNameInput);
+                const secondActionRowMob = new MessageActionRow().addComponents(MobHealthInput);
+                const thirdActionRowMob = new MessageActionRow().addComponents(MobAttackInput);
+                const fourthActionRowMob = new MessageActionRow().addComponents(MobDefenseInput);
+                const fiveActionRowMob = new MessageActionRow().addComponents(MobLoreInput);
+
+                // Add inputs to the modal
+                modalMob.addComponents(firstActionRowMob, secondActionRowMob, thirdActionRowMob, fourthActionRowMob, fiveActionRowMob);
+                interaction.showModal(modalMob)
+            break;
+
             case "config": 
                 const message = await interaction.reply({content: "Est-tu prêt a accepter que je sois configuré pour ton serveur ?", fetchReply: true})
                 message.react('✅').then(() => {
@@ -144,6 +187,16 @@ class InteractionCreateListener extends Listener {
                     let raceDefense =interaction.fields.getTextInputValue('raceDefense')
                     let raceLore = interaction.fields.getTextInputValue('raceLore')
                     functions.writeRaceToDB(interaction, raceName, raceHealth, raceAttack, raceDefense, raceLore)
+
+                break;
+
+                case "createMob":
+                    let MobName = interaction.fields.getTextInputValue('MobName')
+                    let MobHealth = interaction.fields.getTextInputValue('MobHealth')
+                    let MobAttack = interaction.fields.getTextInputValue('MobAttack')
+                    let MobDefense =interaction.fields.getTextInputValue('MobDefense')
+                    let MobLore = interaction.fields.getTextInputValue('MobLore')
+                    functions.writeMobToDB(interaction, MobName, MobHealth, MobAttack, MobDefense, MobLore)
 
                 break;
             }

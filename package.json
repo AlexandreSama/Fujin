@@ -13,6 +13,7 @@
     "discord-akairo": "npm:@notenoughupdates/discord-akairo@^9.0.9",
     "discord.js": "^13.7.0",
     "minecraft-server-util": "^5.2.9",
-    "mysql2": "^2.3.3"
+    "mysql2": "^2.3.3",
+    "nodejs-file-downloader": "^4.9.3"
   }
 }
